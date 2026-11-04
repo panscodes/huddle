@@ -172,11 +172,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
-        <Outlet />
-      </main>
-      <Footer />
+      <div className="flex min-h-dvh flex-col">
+        <Header />
+        <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
       <Toaster />
     </QueryClientProvider>
   );
