@@ -14,7 +14,116 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      participants: {
+        Row: {
+          joined_at: string
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          joined_at?: string
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          joined_at?: string
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "participants_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string
+          id: string
+          instagram_handle: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string
+          id: string
+          instagram_handle?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          instagram_handle?: string | null
+        }
+        Relationships: []
+      }
+      sessions: {
+        Row: {
+          address: string | null
+          capacity: number
+          created_at: string
+          description: string | null
+          duration_minutes: number
+          host_id: string
+          id: string
+          location_name: string
+          sport: string
+          starts_at: string
+          title: string
+        }
+        Insert: {
+          address?: string | null
+          capacity?: number
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number
+          host_id: string
+          id?: string
+          location_name: string
+          sport: string
+          starts_at: string
+          title: string
+        }
+        Update: {
+          address?: string | null
+          capacity?: number
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number
+          host_id?: string
+          id?: string
+          location_name?: string
+          sport?: string
+          starts_at?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_host_id_fkey"
+            columns: ["host_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
