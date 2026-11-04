@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import { Github, Instagram } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { SOCIALS } from "@/lib/social";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/lib/auth";
@@ -58,7 +59,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" },
@@ -73,7 +74,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head><HeadContent /></head>
+      <head>
+        {/* Apply theme before hydration to prevent flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var stored = localStorage.getItem('theme');
+                  var theme = stored || 'dark';
+                  if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+        <HeadContent />
+      </head>
       <body>
         {children}
         <Scripts />
@@ -129,29 +148,32 @@ function Footer() {
           </span>
           <span className="text-sm text-muted-foreground">© 2026</span>
         </p>
-        <div className="flex items-center gap-1">
-          <Button asChild variant="ghost" size="icon" aria-label="GitHub">
-            <a href={SOCIALS.github} target="_blank" rel="noreferrer">
-              <Github className="h-5 w-5" />
-            </a>
-          </Button>
-          {SOCIALS.instagram ? (
-            <Button asChild variant="ghost" size="icon" aria-label="Instagram">
-              <a href={SOCIALS.instagram} target="_blank" rel="noreferrer">
-                <Instagram className="h-5 w-5" />
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+          <div className="flex items-center gap-1">
+            <Button asChild variant="ghost" size="icon" aria-label="GitHub">
+              <a href={SOCIALS.github} target="_blank" rel="noreferrer">
+                <Github className="h-5 w-5" />
               </a>
             </Button>
-          ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Instagram"
-              title="Instagram link coming soon"
-              className="text-muted-foreground"
-            >
-              <Instagram className="h-5 w-5" />
-            </Button>
-          )}
+            {SOCIALS.instagram ? (
+              <Button asChild variant="ghost" size="icon" aria-label="Instagram">
+                <a href={SOCIALS.instagram} target="_blank" rel="noreferrer">
+                  <Instagram className="h-5 w-5" />
+                </a>
+              </Button>
+            ) : (
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Instagram"
+                title="Instagram link coming soon"
+                className="text-muted-foreground"
+              >
+                <Instagram className="h-5 w-5" />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </footer>
@@ -172,7 +194,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-dvh flex-col">
+      <div className="flex min-h-screen flex-col">
         <Header />
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
           <Outlet />
