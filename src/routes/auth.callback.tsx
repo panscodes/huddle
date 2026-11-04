@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { useUser } from "@/lib/auth";
 
 export const Route = createFileRoute("/auth/callback")({
   component: CallbackPage,
@@ -10,30 +9,30 @@ export const Route = createFileRoute("/auth/callback")({
 
 function CallbackPage() {
   const navigate = useNavigate();
-  const { user } = useUser();
 
   useEffect(() => {
-    // Supabase passes session data in URL hash for OAuth callbacks
-    // and query params for email confirmations
     const handleCallback = async () => {
       const hash = window.location.hash;
-      if (hash && (hash.includes("access_token") || hash.includes("refresh_token"))) {
-        // OAuth callback - Supabase JS client handles hash automatically
-        // but we may need to clean up the URL
-        const { error } = await supabase.auth.getSession();
-        if (error) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const fromHash = hash.includes("access_token") || hash.includes("refresh_token") || hash.includes("id_token");
+      const fromQuery = urlParams.get("code") || urlParams.get("error") || urlParams.get("token_hash");
+
+      // Handle OAuth callback (Google, etc.) - Supabase passes tokens in hash or query params
+      if (fromHash || fromQuery) {
+        const { data, error } = await supabase.auth.getSession();
+        if (error || !data.session) {
           toast.error("Sign in failed. Please try again.");
           navigate({ to: "/auth" });
           return;
         }
-        // Clean up the hash from URL
-        window.history.replaceState(null, "", window.location.pathname);
+        // Clean up the hash and query params from URL
+        const url = new URL(window.location.origin + window.location.pathname);
+        window.history.replaceState(null, "", url);
         navigate({ to: "/browse" });
         return;
       }
 
-      // Email confirmation callback - check for confirmation params
-      const urlParams = new URLSearchParams(window.location.search);
+      // Handle email confirmation / invite callbacks via query params
       const type = urlParams.get("type");
       const tokenHash = urlParams.get("token_hash");
 
@@ -69,8 +68,10 @@ function CallbackPage() {
         return;
       }
 
-      // If user is already authenticated (e.g., redirected after OAuth), go to browse
-      if (user) {
+      // Fallback: check if there's an existing session (e.g. page refresh on callback)
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        window.history.replaceState(null, "", window.location.pathname);
         navigate({ to: "/browse" });
         return;
       }
@@ -80,7 +81,7 @@ function CallbackPage() {
     };
 
     handleCallback();
-  }, [user, navigate]);
+  }, [navigate]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">

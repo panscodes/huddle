@@ -21,12 +21,13 @@ export function AuthForm({ mode }: { mode: "in" | "up" }) {
         const { error } = await supabase.auth.signUp({
           email, password,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
+            emailRedirectTo: `${window.location.origin}/`,
             data: { full_name: name },
           },
         });
         if (error) throw error;
         toast.success("Check your email to confirm your account.");
+        navigate({ to: "/profile" });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -45,7 +46,7 @@ export function AuthForm({ mode }: { mode: "in" | "up" }) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}/`,
           queryParams: {
             access_type: "offline",
             prompt: "consent",
