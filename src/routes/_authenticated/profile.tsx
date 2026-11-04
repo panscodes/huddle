@@ -29,9 +29,9 @@ function ProfilePage() {
     e.preventDefault();
     if (!uid) return;
     const ig = form.instagram_handle.trim() ? cleanInstagram(form.instagram_handle) : null;
-    if (form.instagram_handle.trim() && !ig) return toast.error("That Instagram handle doesn't look right.");
+    if (form.instagram_handle.trim() && !ig) { toast.error("That Instagram handle doesn't look right."); return; }
     const { error } = await supabase.from("profiles").upsert({ id: uid, display_name: form.display_name, bio: form.bio || null, instagram_handle: ig });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Profile saved");
   }
 

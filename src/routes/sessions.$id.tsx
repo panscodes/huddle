@@ -72,21 +72,21 @@ function SessionPage() {
   const locQuery = [s.location_name, s.address].filter(Boolean).join(", ");
 
   async function join() {
-    if (!user) return navigate({ to: "/auth" });
+    if (!user) { navigate({ to: "/auth" }); return; }
     const { error } = await supabase.from("participants").insert({ session_id: id, user_id: user.id });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(full ? "You're on the waitlist." : "You're in!");
     qc.invalidateQueries();
   }
   async function leave() {
     const { error } = await supabase.from("participants").delete().eq("session_id", id).eq("user_id", user!.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries();
   }
   async function remove() {
     if (!confirm("Delete this session?")) return;
     const { error } = await supabase.from("sessions").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries();
     navigate({ to: "/" });
   }

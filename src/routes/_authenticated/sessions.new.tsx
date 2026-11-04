@@ -34,7 +34,7 @@ function NewSession() {
       address: f.address || null,
     }).select("id").single();
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await supabase.from("participants").insert({ session_id: data.id, user_id: u.user!.id });
     navigate({ to: "/sessions/$id", params: { id: data.id } });
   }
