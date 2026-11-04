@@ -88,7 +88,7 @@ function Header() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate({ to: "/login", replace: true });
   }
   return (
     <header className="sticky top-0 z-20 border-b bg-background/85 backdrop-blur">
