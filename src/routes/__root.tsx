@@ -88,7 +88,7 @@ function Header() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate({ to: "/login", replace: true });
   }
   return (
     <header className="sticky top-0 z-20 border-b bg-background/85 backdrop-blur">
@@ -104,7 +104,11 @@ function Header() {
               <Button variant="ghost" size="sm" onClick={signOut}>Sign out</Button>
             </>
           ) : (
-            <Button asChild size="sm"><Link to="/auth">Sign in</Link></Button>
+            <>
+              <Button asChild variant="ghost" size="sm"><Link to="/browse">Browse</Link></Button>
+              <Button asChild variant="ghost" size="sm"><Link to="/login">Log in</Link></Button>
+              <Button asChild size="sm"><Link to="/signup">Sign up</Link></Button>
+            </>
           )}
         </nav>
       </div>
