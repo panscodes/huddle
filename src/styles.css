@@ -63,9 +63,65 @@
   --shadow-soft-value: 0 1px 2px oklch(0.2 0.02 160 / 4%), 0 8px 24px -12px oklch(0.2 0.02 160 / 12%);
 }
 
+.dark {
+  --background: oklch(0.2 0.015 160);
+  --foreground: oklch(0.985 0.003 120);
+  --card: oklch(0.24 0.015 160);
+  --card-foreground: oklch(0.985 0.003 120);
+  --popover: oklch(0.24 0.015 160);
+  --popover-foreground: oklch(0.985 0.003 120);
+  --secondary: oklch(0.26 0.012 150);
+  --secondary-foreground: oklch(0.985 0.003 120);
+  --muted: oklch(0.26 0.005 140);
+  --muted-foreground: oklch(0.65 0.015 160);
+  --accent: oklch(0.26 0.04 150);
+  --accent-foreground: oklch(0.985 0.003 120);
+  --destructive: oklch(0.577 0.2 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --warning: oklch(0.55 0.06 85);
+  --warning-foreground: oklch(0.99 0 0);
+  --border: oklch(0.26 0.006 140);
+  --input: oklch(0.26 0.006 140);
+  --ring: oklch(0.52 0.13 155);
+  --shadow-soft-value: 0 1px 2px oklch(0 0 0 / 15%), 0 8px 24px -12px oklch(0 0 0 / 25%);
+}
+
+.dark {
+  --color-background: oklch(0.2 0.015 160);
+  --color-foreground: oklch(0.985 0.003 120);
+  --color-card: oklch(0.24 0.015 160);
+  --color-card-foreground: oklch(0.985 0.003 120);
+  --color-popover: oklch(0.24 0.015 160);
+  --color-popover-foreground: oklch(0.985 0.003 120);
+  --color-primary: oklch(0.52 0.13 155);
+  --color-primary-foreground: oklch(0.99 0.005 155);
+  --color-secondary: oklch(0.26 0.012 150);
+  --color-secondary-foreground: oklch(0.985 0.003 120);
+  --color-muted: oklch(0.26 0.005 140);
+  --color-muted-foreground: oklch(0.65 0.015 160);
+  --color-accent: oklch(0.26 0.04 150);
+  --color-accent-foreground: oklch(0.985 0.003 120);
+  --color-destructive: oklch(0.577 0.2 27);
+  --color-destructive-foreground: oklch(0.99 0 0);
+  --color-warning: oklch(0.55 0.06 85);
+  --color-warning-foreground: oklch(0.99 0 0);
+  --color-border: oklch(0.26 0.006 140);
+  --color-input: oklch(0.26 0.006 140);
+  --color-ring: oklch(0.52 0.13 155);
+  --color-ring-offset-background: oklch(0.2 0.015 160);
+  --shadow-soft: 0 1px 2px oklch(0 0 0 / 15%), 0 8px 24px -12px oklch(0 0 0 / 25%);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
+    transition-property: background-color, border-color, color, fill, stroke, -webkit-text-decoration-color !important;
+    transition-duration: 0.3s !important;
+    transition-timing-function: ease !important;
+  }
+  html {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
   }
   body {
     background-color: var(--color-background);

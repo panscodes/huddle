@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   return (
-    <section className="relative -my-8 flex min-h-[calc(100dvh-4rem)] flex-col items-center justify-center overflow-hidden text-center">
+    <section className="relative -my-8 flex min-h-[calc(100dvh-4rem-200px)] flex-col items-center justify-center overflow-hidden text-center">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10"
