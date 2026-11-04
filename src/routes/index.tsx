@@ -1,6 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/lib/auth";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -17,6 +18,14 @@ export const Route = createFileRoute("/")({
 });
 
 function Landing() {
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  if (user) {
+    navigate({ to: "/browse" });
+    return null;
+  }
+
   return (
     <section className="relative -my-8 flex min-h-[calc(100dvh-4rem-200px)] flex-col items-center justify-center overflow-hidden text-center">
       <div

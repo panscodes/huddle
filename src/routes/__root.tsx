@@ -14,6 +14,14 @@ import { Github, Instagram } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { SOCIALS } from "@/lib/social";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/lib/auth";
@@ -75,22 +83,6 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        {/* Apply theme before hydration to prevent flash */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var stored = localStorage.getItem('theme');
-                  var theme = stored || 'dark';
-                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
         <HeadContent />
       </head>
       <body>
@@ -109,20 +101,42 @@ function Header() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/login", replace: true });
+    navigate({ to: "/", replace: true });
   }
   return (
     <header className="sticky top-0 z-20 border-b bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
-        <Link to="/" className="font-display text-xl font-bold tracking-tight">
+        <Link to={user ? "/browse" : "/"} className="font-display text-xl font-bold tracking-tight">
           huddle<span className="text-primary">.</span>
         </Link>
         <nav className="flex items-center gap-2">
           {user ? (
             <>
               <Button asChild size="sm"><Link to="/sessions/new">Host a session</Link></Button>
-              <Button asChild variant="ghost" size="sm"><Link to="/profile">Profile</Link></Button>
-              <Button variant="ghost" size="sm" onClick={signOut}>Sign out</Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="p-0">
+                    <Avatar className="h-8 w-8">
+                      {user.user_metadata?.avatar_url ? (
+                        <AvatarImage src={user.user_metadata.avatar_url as string} />
+                      ) : null}
+                      <AvatarFallback>
+                        {(user.user_metadata?.full_name as string | undefined)?.charAt(0) ??
+                          user.email?.charAt(0) ??
+                          "?"
+                        }
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile">Your Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut}>Sign out</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
           ) : (
             <>
