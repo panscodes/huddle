@@ -10,8 +10,10 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Github, Instagram } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
+import { SOCIALS } from "@/lib/social";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/lib/auth";
 
@@ -106,7 +108,8 @@ function Header() {
           ) : (
             <>
               <Button asChild variant="ghost" size="sm"><Link to="/browse">Browse</Link></Button>
-              <Button asChild variant="ghost" size="sm"><Link to="/login">Log in</Link></Button>
+              <div className="mx-3 h-5 w-px bg-border" />
+              <Button asChild variant="ghost" size="sm" className="ml-2"><Link to="/login">Log in</Link></Button>
               <Button asChild size="sm"><Link to="/signup">Sign up</Link></Button>
             </>
           )}
