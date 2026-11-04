@@ -10,8 +10,10 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Github, Instagram } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
+import { SOCIALS } from "@/lib/social";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/lib/auth";
 
@@ -106,13 +108,53 @@ function Header() {
           ) : (
             <>
               <Button asChild variant="ghost" size="sm"><Link to="/browse">Browse</Link></Button>
-              <Button asChild variant="ghost" size="sm"><Link to="/login">Log in</Link></Button>
+              <div className="mx-3 h-5 w-px bg-border" />
+              <Button asChild variant="ghost" size="sm" className="ml-2"><Link to="/login">Log in</Link></Button>
               <Button asChild size="sm"><Link to="/signup">Sign up</Link></Button>
             </>
           )}
         </nav>
       </div>
     </header>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t bg-background">
+      <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row">
+        <p className="flex items-center gap-2">
+          <span className="font-display text-lg font-bold tracking-tight">
+            huddle<span className="text-primary">.</span>
+          </span>
+          <span className="text-sm text-muted-foreground">© 2026</span>
+        </p>
+        <div className="flex items-center gap-1">
+          <Button asChild variant="ghost" size="icon" aria-label="GitHub">
+            <a href={SOCIALS.github} target="_blank" rel="noreferrer">
+              <Github className="h-5 w-5" />
+            </a>
+          </Button>
+          {SOCIALS.instagram ? (
+            <Button asChild variant="ghost" size="icon" aria-label="Instagram">
+              <a href={SOCIALS.instagram} target="_blank" rel="noreferrer">
+                <Instagram className="h-5 w-5" />
+              </a>
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Instagram"
+              title="Instagram link coming soon"
+              className="text-muted-foreground"
+            >
+              <Instagram className="h-5 w-5" />
+            </Button>
+          )}
+        </div>
+      </div>
+    </footer>
   );
 }
 
@@ -130,10 +172,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
-      <main className="mx-auto max-w-5xl px-4 py-8">
-        <Outlet />
-      </main>
+      <div className="flex min-h-dvh flex-col">
+        <Header />
+        <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
       <Toaster />
     </QueryClientProvider>
   );
