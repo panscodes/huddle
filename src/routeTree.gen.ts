@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BrowseRouteImport } from './routes/browse'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as PlayersIdRouteImport } from './routes/players.$id'
 import { Route as SessionsIdRouteImport } from './routes/sessions.$id'
@@ -29,6 +32,21 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BrowseRoute = BrowseRouteImport.update({
+  id: '/browse',
+  path: '/browse',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
@@ -56,6 +74,9 @@ const AuthenticatedSessionsNewRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/browse': typeof BrowseRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/players/$id': typeof PlayersIdRoute
   '/sessions/$id': typeof SessionsIdRoute
@@ -64,6 +85,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/browse': typeof BrowseRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/players/$id': typeof PlayersIdRoute
   '/sessions/$id': typeof SessionsIdRoute
@@ -74,6 +98,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/browse': typeof BrowseRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/players/$id': typeof PlayersIdRoute
   '/sessions/$id': typeof SessionsIdRoute
@@ -84,6 +111,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/browse'
+    | '/login'
+    | '/signup'
     | '/profile'
     | '/players/$id'
     | '/sessions/$id'
@@ -92,6 +122,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/browse'
+    | '/login'
+    | '/signup'
     | '/profile'
     | '/players/$id'
     | '/sessions/$id'
@@ -101,6 +134,9 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/browse'
+    | '/login'
+    | '/signup'
     | '/_authenticated/profile'
     | '/players/$id'
     | '/sessions/$id'
@@ -111,6 +147,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BrowseRoute: typeof BrowseRoute
+  LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
   PlayersIdRoute: typeof PlayersIdRoute
   SessionsIdRoute: typeof SessionsIdRoute
 }
@@ -136,6 +175,27 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/browse': {
+      id: '/browse'
+      path: '/browse'
+      fullPath: '/browse'
+      preLoaderRoute: typeof BrowseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/profile': {
@@ -186,6 +246,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  BrowseRoute: BrowseRoute,
+  LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute,
   PlayersIdRoute: PlayersIdRoute,
   SessionsIdRoute: SessionsIdRoute,
 }

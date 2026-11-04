@@ -104,7 +104,11 @@ function Header() {
               <Button variant="ghost" size="sm" onClick={signOut}>Sign out</Button>
             </>
           ) : (
-            <Button asChild size="sm"><Link to="/auth">Sign in</Link></Button>
+            <>
+              <Button asChild variant="ghost" size="sm"><Link to="/browse">Browse</Link></Button>
+              <Button asChild variant="ghost" size="sm"><Link to="/login">Log in</Link></Button>
+              <Button asChild size="sm"><Link to="/signup">Sign up</Link></Button>
+            </>
           )}
         </nav>
       </div>
