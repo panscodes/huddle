@@ -119,6 +119,45 @@ function Header() {
   );
 }
 
+function Footer() {
+  return (
+    <footer className="border-t bg-background">
+      <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row">
+        <p className="flex items-center gap-2">
+          <span className="font-display text-lg font-bold tracking-tight">
+            huddle<span className="text-primary">.</span>
+          </span>
+          <span className="text-sm text-muted-foreground">© 2026</span>
+        </p>
+        <div className="flex items-center gap-1">
+          <Button asChild variant="ghost" size="icon" aria-label="GitHub">
+            <a href={SOCIALS.github} target="_blank" rel="noreferrer">
+              <Github className="h-5 w-5" />
+            </a>
+          </Button>
+          {SOCIALS.instagram ? (
+            <Button asChild variant="ghost" size="icon" aria-label="Instagram">
+              <a href={SOCIALS.instagram} target="_blank" rel="noreferrer">
+                <Instagram className="h-5 w-5" />
+              </a>
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Instagram"
+              title="Instagram link coming soon"
+              className="text-muted-foreground"
+            >
+              <Instagram className="h-5 w-5" />
+            </Button>
+          )}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
