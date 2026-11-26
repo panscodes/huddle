@@ -6,6 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+const getCallbackUrl = () => {
+  if (typeof window !== "undefined") {
+    // This automatically resolves to http://localhost:8080/auth/callback
+    // or https://huddle.shrishpanda2.workers.dev/auth/callback
+    return `${window.location.origin}/auth/callback`;
+  }
+  return "https://huddle.shrishpanda2.workers.dev/auth/callback";
+};
+
 export function AuthForm({ mode }: { mode: "in" | "up" }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -43,10 +52,11 @@ export function AuthForm({ mode }: { mode: "in" | "up" }) {
   async function google() {
     setBusy(true);
     try {
+      const callbackUrl = getCallbackUrl();
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: callbackUrl,
           queryParams: {
             access_type: "offline",
             prompt: "consent",
@@ -77,12 +87,9 @@ export function AuthForm({ mode }: { mode: "in" | "up" }) {
         <div className="space-y-1.5"><Label>Password</Label><Input type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} /></div>
         <Button className="w-full" disabled={busy}>{mode === "in" ? "Log in" : "Create account"}</Button>
       </form>
-      <p className="mt-4 text-center text-sm text-muted-foreground">
-        {mode === "in" ? "New here? " : "Already have an account? "}
-        <Link to={mode === "in" ? "/signup" : "/login"} className="text-primary underline">
-          {mode === "in" ? "Create an account" : "Log in"}
-        </Link>
-      </p>
+      <button className="mt-4 text-sm text-muted-foreground hover:text-primary" onClick={() => setMode(mode === "in" ? "up" : "in")}>
+        {mode === "in" ? "New here? Create an account" : "Already have an account? Sign in"}
+      </button>
     </div>
   );
 }
